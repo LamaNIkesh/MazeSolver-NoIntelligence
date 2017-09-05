@@ -25,8 +25,8 @@ Nottingham Trent University
 
 #define left_irPin A0
 #define right_irPin A1
-
-char val;                    // stores the char from the serial read
+// stores the char from the serial read for bluetooth communication
+char val;                    
  
 int SonarDistance;           
 int IrDistance;
@@ -38,16 +38,19 @@ int left_setpoint = 400;
 int right_setpoint = 380;
 int threshold =20;
 float error = 0;
-
+//PID parameters
 float integral = 0;
 float derivative = 0;
 float last_error = 0;
 float PID_value = 0;
-
+//tuning these parameters is pain in the ass.
+//probably could use some optimisation to reach best option but too much work
 float Kp = 0.7;
 float Ki = 0.005;
 float Kd = 1.3;
-int correctionSpeed=54;         // determines the speed to be corrected
+//These correction speed are purely experimental
+//Needs to manually checked to get the appropriate correction speed
+int correctionSpeed=54;         
 int correctionSpeedR = 53;
 int rightWheelSpeed;
 int leftWheelSpeed;
@@ -96,6 +99,7 @@ void loop()
       pid_calculation(right_setpoint);
       rightwall_follow();
       //check if the button is pressed, if pressed break the loop
+      //This push button debounce is a little buggy, doesnt work sometimes, 2 out of 10 times.
       if(debounce(lastButton_r,switchPinrightwall)==HIGH)break;
     }
   }
@@ -213,7 +217,7 @@ void leftwall_follow(){
   digitalWrite(ledPin,HIGH);
 
 
-  //sharp right turn when theres a wall on the left and wall at the front as well
+  //sharp right turn(90 degree turn) when theres a wall on the left and wall at the front as well
 
   if(SonarDistance <7 && SonarDistance!=0  && IrDistance > 100)
   {
@@ -237,6 +241,9 @@ void sharp_right()
   //delay(500);
 }
 
+//Can only use either right or left wall following at one time. No point using both left and right wall follow
+//Right wall follow is just here to show that it can follow right wall as well if need be. IT is exactlyt he same as left 
+//wall following, nothing fancy
 //----------------------------rightwallfollow--------------------------------------------------
 void rightwall_follow(){
 
