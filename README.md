@@ -9,3 +9,5 @@ Also the robot can be manually controlled via an android app developed using MIT
 * a 5v voltage regulator to regulate the voltage from the 6.6 v battery pack
 * RN42 bluetooth module 
 * push buttons
+
+See it in action [here](https://www.youtube.com/watch?v=fzpzEGue-wc)
